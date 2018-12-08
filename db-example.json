@@ -1,0 +1,29 @@
+{
+  "clients": [
+    {
+      "id": "892389489234892893489234",
+      "name" : "Client 1"
+    }
+  ],
+  "projects": [
+    {
+      "id": "284982389428934",
+      "name": "Project 1",
+      "clientId": "892389489234892893489234"
+    }
+  ],
+  "sprints": [
+    {
+      "id" : "923402890348923489",
+      "name": "Sprint 1",
+      "projectId": "284982389428934",
+      "nr" : 3,
+      "status" : "FUTURE|PLANNED|ACTIVE|IN_REVIEW|FINALIZING|FINISHED",
+      "document" : {
+        "status" : "NON-EXISTENT|DRAFT|SUBMITTED|APPROVED",
+        "name" : "null|DOCUMENT_NAME",
+        "data" : "BASE64 encoded data of the file? | Link to NextCloud?"
+      }
+    }
+  ]
+}
