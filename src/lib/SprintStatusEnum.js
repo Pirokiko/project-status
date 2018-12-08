@@ -1,0 +1,8 @@
+export default {
+    FUTURE: 'FUTURE',
+    PLANNED: 'PLANNED',
+    ACTIVE: 'ACTIVE',
+    IN_REVIEW: 'IN_REVIEW',
+    FINALIZING: 'FINALIZING',
+    FINISHED: 'FINISHED',
+};

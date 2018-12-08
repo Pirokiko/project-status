@@ -7,7 +7,7 @@ const {
 } = Layout;
 
 export const BasicPage = ({title, actionButtons, children}) => (
-    <Layout>
+    <Layout style={{minHeight:'100%'}}>
         <Header style={{color: 'white'}}>
             <span>{title}</span>
             <span style={{float: 'right'}}>{actionButtons()}</span></Header>
