@@ -1,6 +1,6 @@
 import React from 'react';
 import {BasicPage} from './BasicPage'
-import {Button} from 'antd'
+import {Button, Col, Row} from 'antd'
 import {ClientConsumer} from '../providers/Client'
 import {Link, withRouter} from 'react-router-dom'
 import {ClientCard} from '../molecule/ClientCard'
@@ -10,7 +10,7 @@ import {ProjectCard} from '../molecule/ProjectCard'
 const ClientPage = ({id}) => (
     <ClientConsumer id={id}>
         {(client) => {
-            if(!client) return null;
+            if (!client) return null;
             return (
                 <BasicPage title={client.name} actionButtons={() => (
                     <Button type={'primary'} onClick={() => alert('show modal to add project')}>
@@ -18,14 +18,19 @@ const ClientPage = ({id}) => (
                     </Button>
                 )}>
                     <ClientCard client={client}/>
+                    <br/>
                     <h1>Projects</h1>
-                    <ProjectConsumer clientId={client.id}>
-                        {(projects) => projects.map(project => (
-                            <Link to={'/project/' + project.id}>
-                                <ProjectCard project={project} style={{maxWidth: '300px'}}/>
-                            </Link>
-                        ))}
-                    </ProjectConsumer>
+                    <Row gutter={16}>
+                        <ProjectConsumer clientId={client.id}>
+                            {(projects) => projects.map(project => (
+                                <Col span={8}>
+                                    <Link to={'/project/' + project.id}>
+                                        <ProjectCard project={project} />
+                                    </Link>
+                                </Col>
+                            ))}
+                        </ProjectConsumer>
+                    </Row>
                 </BasicPage>
             );
         }}

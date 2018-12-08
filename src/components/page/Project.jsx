@@ -20,15 +20,16 @@ const ProjectPage = ({id}) => (
                     </Button>
                 )}>
                     <ProjectCard project={project}/>
+                    <br/>
                     <h1>Sprints</h1>
                     <Row gutter={16}>
-                    <SprintConsumer projectId={project.id}>
-                        {(sprints) => sprints.map(sprint => (
-                            <Col key={sprint.id} span={8}>
-                                <SprintCard sprint={sprint} style={{marginBottom: 16}} />
-                            </Col>
-                        ))}
-                    </SprintConsumer>
+                        <SprintConsumer projectId={project.id}>
+                            {(sprints) => sprints.map(sprint => (
+                                <Col key={sprint.id} span={8}>
+                                    <SprintCard sprint={sprint} style={{marginBottom: 16}} />
+                                </Col>
+                            ))}
+                        </SprintConsumer>
                     </Row>
                 </BasicPage>
             );
