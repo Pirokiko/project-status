@@ -10,12 +10,20 @@ export class ClientProvider extends React.Component {
         this.state = {
             clients: []
         };
+
+        this.refreshClients = this.refreshClients.bind(this);
     }
 
-    componentDidMount(){
+    refreshClients(){
         getClients()
             .then(clients => this.setState({clients}))
             .catch(err => console.error(err));
+    }
+
+    componentDidMount(){
+        this.refreshClients();
+
+        document.addEventListener('client.changed', this.refreshClients);
     }
 
     render(){

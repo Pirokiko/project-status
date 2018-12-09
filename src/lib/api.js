@@ -50,12 +50,12 @@ export const getClients = () => {
 export const uploadClient = client => {
     if(!client.id){
         client.id = uuid();
-        return post('/sprints/', client)
-            .then(dispatch('sprint.changed'));
+        return post('/clients/', client)
+            .then(dispatch('client.changed'));
     }
 
-    return put('/sprints/'+client.id, client)
-        .then(dispatch('sprint.changed'));
+    return put('/clients/'+client.id, client)
+        .then(dispatch('client.changed'));
 };
 
 

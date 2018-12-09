@@ -41,7 +41,7 @@ export const SprintConsumer = ({id, projectIds, children: renderFunc}) => (
             if(id){
                 return renderFunc(sprints.find(sprint => sprint.id === id));
             }
-            if (projectIds.length > 0) {
+            if (projectIds) {
                 sprints = sprints.filter(sprint => projectIds.includes(sprint.projectId));
             }
             return renderFunc(sprints);
@@ -54,6 +54,6 @@ SprintConsumer.propTypes = {
 };
 SprintConsumer.defaultProps = {
     id: null,
-    projectIds: []
+    projectIds: null,
 };
 

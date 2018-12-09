@@ -15,7 +15,11 @@ export const colorForStatus = (status) => {
         case SprintStatusEnum.FINISHED:
             return 'green';
 
+        case 'INACTIVE':
+            return 'red';
+
         default:
             return '#888888';
     }
 };
+

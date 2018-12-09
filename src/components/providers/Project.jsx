@@ -47,7 +47,7 @@ export const ProjectConsumer = ({id, clientIds, children: renderFunc}) => (
             if(id){
                 return renderFunc(projects.find(project => project.id === id));
             }
-            if (clientIds.length > 0) {
+            if (clientIds) {
                 projects = projects.filter(project => clientIds.includes(project.clientId));
             }
             return renderFunc(projects);
@@ -60,6 +60,6 @@ ProjectConsumer.propTypes = {
 };
 ProjectConsumer.defaultProps = {
     id: null,
-    clientIds: [],
+    clientIds: null,
 };
 
