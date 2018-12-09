@@ -23,7 +23,7 @@ const ProjectPage = ({id}) => (
                     <br/>
                     <h1>Sprints</h1>
                     <Row gutter={16}>
-                        <SprintConsumer projectId={project.id}>
+                        <SprintConsumer projectIds={[project.id]}>
                             {(sprints) => sprints.map(sprint => (
                                 <Col key={sprint.id} span={8}>
                                     <SprintCard sprint={sprint} style={{marginBottom: 16}} />

@@ -18,11 +18,11 @@ const getSurroundingValues = (status, statusList) => {
     return [statusList[idx - 1], statusList[idx + 1]];
 };
 
-const StatusMenu = ({entity, values, statusKey, onChange}) => (
+const StatusMenu = ({values, status, onChange}) => (
     <Menu>
         {values.map(value => (
-            <Menu.Item key={entity.id + value}
-                       disabled={!isAllowed(entity[statusKey], getSurroundingValues(value, values))}
+            <Menu.Item key={value}
+                       disabled={!isAllowed(status, getSurroundingValues(value, values))}
                        onClick={changeTo(onChange, value)}
             >
                 {value}
@@ -31,19 +31,26 @@ const StatusMenu = ({entity, values, statusKey, onChange}) => (
     </Menu>
 );
 
-export const EntityStatusTag = ({entity, statusKey, values, onChange}) => (
-    <Dropdown overlay={
-        <StatusMenu entity={entity} statusKey={statusKey} values={values} onChange={onChange}/>
-    }>
-        <Tag color={colorForStatus(entity.status)}>{entity.status}</Tag>
-    </Dropdown>
-);
-EntityStatusTag.propTypes = {
-    entity: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
+export const StatusTag = ({status, values, onChange, noChange}) => {
+    const tag = <Tag color={colorForStatus(status)}>{status}</Tag>;
+    if(noChange){
+        return tag;
+    }
+    return (
+        <Dropdown overlay={
+            <StatusMenu status={status} values={values} onChange={onChange}/>
+        }>
+            {tag}
+        </Dropdown>
+    );
+}
+StatusTag.propTypes = {
     values: PropTypes.array.isRequired,
-    statusKey: PropTypes.string,
+    onChange: PropTypes.func,
+    status: PropTypes.string,
+    noChange: PropTypes.bool,
 };
-EntityStatusTag.defaultProps = {
-    statusKey: 'status',
+StatusTag.defaultProps = {
+    onChange: () => {},
+    noChange: false,
 };

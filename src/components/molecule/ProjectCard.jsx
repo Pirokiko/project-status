@@ -21,13 +21,13 @@ export const ProjectCard = ({project, ...props}) => (
           title={project.name}
           extra={<ProjectStatusTag project={project} onChange={status => uploadStatus(status, project)}/>}
     >
-        <SprintConsumer projectId={project.id}>
+        <SprintConsumer projectIds={[project.id]}>
             {(sprints) => (
                 <React.Fragment>
                     <div>This project has {sprints.length} sprints</div>
                     <div>{statusSprints(sprints, FINISHED).length} are finished</div>
                     <div>{statusSprints(sprints, ACTIVE).length} are active</div>
-                    <div>{statusSprints(sprints, FUTURE).length} are future projects</div>
+                    <div>{statusSprints(sprints, FUTURE).length} are future sprints</div>
                 </React.Fragment>
             )}
         </SprintConsumer>

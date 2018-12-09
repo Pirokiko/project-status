@@ -21,9 +21,9 @@ const ClientPage = ({id}) => (
                     <br/>
                     <h1>Projects</h1>
                     <Row gutter={16}>
-                        <ProjectConsumer clientId={client.id}>
+                        <ProjectConsumer clientIds={[client.id]}>
                             {(projects) => projects.map(project => (
-                                <Col span={8}>
+                                <Col key={project.id} span={8}>
                                     <Link to={'/project/' + project.id}>
                                         <ProjectCard project={project} />
                                     </Link>

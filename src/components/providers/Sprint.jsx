@@ -35,14 +35,14 @@ export class SprintProvider extends React.Component {
 SprintProvider.propTypes = {};
 SprintProvider.defaultProps = {};
 
-export const SprintConsumer = ({id, projectId, children: renderFunc}) => (
+export const SprintConsumer = ({id, projectIds, children: renderFunc}) => (
     <Consumer>
         {(sprints) => {
             if(id){
                 return renderFunc(sprints.find(sprint => sprint.id === id));
             }
-            if (projectId) {
-                sprints = sprints.filter(sprint => sprint.projectId === projectId);
+            if (projectIds.length > 0) {
+                sprints = sprints.filter(sprint => projectIds.includes(sprint.projectId));
             }
             return renderFunc(sprints);
         }}
@@ -50,10 +50,10 @@ export const SprintConsumer = ({id, projectId, children: renderFunc}) => (
 );
 SprintConsumer.propTypes = {
     id: PropTypes.string,
-    projectId: PropTypes.string,
+    projectIds: PropTypes.array,
 };
 SprintConsumer.defaultProps = {
     id: null,
-    projectId: null
+    projectIds: []
 };
 

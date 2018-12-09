@@ -24,7 +24,7 @@ export class ProjectProvider extends React.Component {
         //setup the api call, subscribe to websocket for changes, etc ......
         this.refreshProjects();
 
-        document.addEventListener('project.change', this.refreshProjects);
+        document.addEventListener('project.changed', this.refreshProjects);
     }
 
     render() {
@@ -41,14 +41,14 @@ ProjectProvider.defaultProps = {
     clientId: null,
 };
 
-export const ProjectConsumer = ({id, clientId, children: renderFunc}) => (
+export const ProjectConsumer = ({id, clientIds, children: renderFunc}) => (
     <Consumer>
         {(projects) => {
             if(id){
                 return renderFunc(projects.find(project => project.id === id));
             }
-            if (clientId) {
-                projects = projects.filter(project => project.clientId === clientId);
+            if (clientIds.length > 0) {
+                projects = projects.filter(project => clientIds.includes(project.clientId));
             }
             return renderFunc(projects);
         }}
@@ -56,10 +56,10 @@ export const ProjectConsumer = ({id, clientId, children: renderFunc}) => (
 );
 ProjectConsumer.propTypes = {
     id: PropTypes.string,
-    clientId: PropTypes.string,
+    clientIds: PropTypes.array,
 };
 ProjectConsumer.defaultProps = {
     id: null,
-    clientId: null,
+    clientIds: [],
 };
 

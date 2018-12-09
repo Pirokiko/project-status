@@ -1,5 +1,5 @@
 export default {
-    FINISHED: 'FINISHED',
-    ACTIVE: 'ACTIVE',
     FUTURE: 'FUTURE',
+    ACTIVE: 'ACTIVE',
+    FINISHED: 'FINISHED',
 };

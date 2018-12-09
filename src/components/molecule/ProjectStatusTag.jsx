@@ -1,8 +1,8 @@
 import React from 'react';
 
 import ProjectStatusEnum from '../../lib/ProjectStatusEnum'
-import {EntityStatusTag} from './EntityStatusTag'
+import {StatusTag} from './StatusTag'
 
 export const ProjectStatusTag = ({ project, onChange }) => (
-    <EntityStatusTag values={Object.values(ProjectStatusEnum)} onChange={onChange} entity={project}/>
+    <StatusTag values={Object.values(ProjectStatusEnum)} onChange={onChange} status={project.status}/>
 )

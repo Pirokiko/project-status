@@ -5,13 +5,17 @@ import {Card} from 'antd'
 import {ProjectConsumer} from '../providers/Project'
 
 import ProjectStatusEnum from '../../lib/ProjectStatusEnum';
+import {ClientStatusTag} from './ClientStatusTag'
 const { FINISHED, ACTIVE, FUTURE } = ProjectStatusEnum;
 
 const statusProjects = (projects, status) => projects.filter(project => project.status === status);
 
 export const ClientCard = ({client, ...props}) => (
-    <Card title={client.name} {...props}>
-        <ProjectConsumer clientId={client.id}>
+    <Card {...props}
+          title={client.name}
+          extra={<ClientStatusTag client={client} noChange />}
+    >
+        <ProjectConsumer clientIds={[client.id]}>
             {(projects) => (
                 <React.Fragment>
                     <div>This client has {projects.length} projects</div>
