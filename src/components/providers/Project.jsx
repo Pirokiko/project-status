@@ -10,13 +10,21 @@ export class ProjectProvider extends React.Component {
         this.state = {
             projects: [],
         };
+
+        this.refreshProjects = this.refreshProjects.bind(this);
+    }
+
+    refreshProjects(){
+        getProjects()
+            .then(projects => this.setState({projects}))
+            .catch(err => console.error(err));
     }
 
     componentDidMount() {
         //setup the api call, subscribe to websocket for changes, etc ......
-        getProjects()
-            .then(projects => this.setState({projects}))
-            .catch(err => console.error(err));
+        this.refreshProjects();
+
+        document.addEventListener('project.change', this.refreshProjects);
     }
 
     render() {

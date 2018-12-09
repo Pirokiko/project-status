@@ -1,32 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Card, Tag} from 'antd'
+import {Card} from 'antd'
 
-import ProjectStatusEnum from '../../lib/ProjectStatusEnum';
 import SprintStatusEnum from '../../lib/SprintStatusEnum';
 import {SprintConsumer} from '../providers/Sprint'
+import {ProjectStatusTag} from './ProjectStatusTag'
+import {uploadProject} from '../../lib/api'
 
 const {FINISHED, ACTIVE, FUTURE} = SprintStatusEnum;
 
 const statusSprints = (sprints, status) => sprints.filter(sprint => sprint.status === status);
 
-const colorForStatus = (status) => {
-    switch (status) {
-        case ProjectStatusEnum.ACTIVE:
-            return 'orange';
-        case ProjectStatusEnum.FINISHED:
-            return 'green';
-        case ProjectStatusEnum.FUTURE:
-            return 'cyan';
-        default:
-            return '#888888';
-    }
-};
+const uploadStatus = (status, project) => uploadProject({
+    ...project,
+    status,
+});
 
 export const ProjectCard = ({project, ...props}) => (
     <Card {...props}
           title={project.name}
-          extra={<Tag color={colorForStatus(project.status)}>{project.status}</Tag>}
+          extra={<ProjectStatusTag project={project} onChange={status => uploadStatus(status, project)}/>}
     >
         <SprintConsumer projectId={project.id}>
             {(sprints) => (

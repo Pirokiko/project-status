@@ -10,13 +10,20 @@ export class SprintProvider extends React.Component {
         this.state = {
             sprints: [],
         };
+        this.refreshSprints = this.refreshSprints.bind(this);
+    }
+
+    refreshSprints() {
+        getSprints()
+            .then(sprints => this.setState({sprints}))
+            .catch(err => console.error(err));
     }
 
     componentDidMount() {
         //setup the api call, subscribe to websocket for changes, etc ......
-        getSprints()
-            .then(sprints => this.setState({sprints}))
-            .catch(err => console.error(err));
+        this.refreshSprints();
+
+        document.addEventListener('sprint.changed', this.refreshSprints);
     }
 
     render() {
