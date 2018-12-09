@@ -1,44 +1,56 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Project Status
 
-## Available Scripts
+## Overzicht
 
-In the project directory, you can run:
+Dit project is gemaakt om op een specifieke manier projecten in de gaten te houden, qua status en benodigde acties.
+De focus ligt vooral op de globale overzicht en niet op de detail.
 
-### `npm start`
+## Structure
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Het hoogste niveau is een klant.
+Een klant heeft een of meerdere projecten lopen.
+Elk projecten heeft weer een of meerdere sprints, waarin werk wordt gedaan voor dat project.
+  
+Een sprint heeft een van de volgende fases:  
+* FUTURE: Toekomistige sprint, waar nog niet vast ligt wat er in moet gebeuren.
+* PLANNED: Tijd is gereserveerd voor de Sprint in de planning. Hij moet nog met de klant doorgenomen worden en afstemmen wat er in komt.
+* ACTIVE: Sprint is bezig. Hierin wordt het meeste ontwikkelwerk gedaan.
+* IN_REVIEW: Sprint is ter test aangeleverd aan de klant.
+* FINALIZING: Sprint wordt afgerond aan de hand van de door klant aangeleverde feedback.
+* FINISHED: Sprint is afgerond. Tijd voor een nieuwe sprint.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Roadmap
 
-### `npm test`
+Toevoegen van een sprint document aan een sprint.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Toevoegen van een checklist voor de acties op een sprint:
+* FUTURE
+    * Afspreken met klant om door te spreken wat er moet gebeueren in de sprint.
+    * Inplannen van de sprint
+    * Communiceren planning aan de klant 
+* PLANNED
+    * Sprint document opstellen
+    * Sprint document laten goedkeuren door de klant
+    * Toevoegen van goedgekeurd sprint document aan de sprint.
+* ACTIVE
+    * Verwerken van alle afgesproken features in de spring
+    * Eventueel een tussentijdse oplevering voor extra feedback
+    * Eventueel continous feedback met CD
+    * Afspraak maken met de klant om demo te geven van gedaan werk
+* IN_REVIEW
+    * Nabellen of testen lukt en controleof ze op tijd hiermee klaar zijn
+    * Indexeren van de feedback
+    * Opdelen van de feedback in onderdeel van deze sprint of op backlog zetten
+* FINALIZING
+    * Verwerken van de feedback welke onderdeel is van deze sprint
+* FINISHED
+    * nothing to do, you're done
 
-### `npm run build`
+Toevoegen van een verwachte datum waarop een sprint naar de volgende fase zal gaan.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Toevoegen van indicaties dat er actie op een sprint/project ondernomen dient te worden (op basis van vastleggen datums voor volgende fase en aantal acties?)
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Restricties opleggen aan het wisselen van fases:  
+Je moet de checklist hebben afgewerkt om naar de volgende fase te kunnen gaan.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Restricties opleggen aan afvinken van de acties op de checklist, sommige acties vereisen dat een andere actie eerst voldaan is
