@@ -20,9 +20,9 @@
       "nr" : 3,
       "status" : "FUTURE|PLANNED|ACTIVE|IN_REVIEW|FINALIZING|FINISHED",
       "document" : {
-        "status" : "NON-EXISTENT|DRAFT|SUBMITTED|APPROVED",
+        "status" : "null|DRAFT|SUBMITTED|APPROVED",
         "name" : "null|DOCUMENT_NAME",
-        "data" : "BASE64 encoded data of the file? | Link to NextCloud?"
+        "data" : "reference uuid in file-server project"
       }
     }
   ]

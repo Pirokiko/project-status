@@ -3,6 +3,18 @@ import PropTypes from 'prop-types';
 import {Input, Modal} from 'antd'
 import {uploadSprint} from '../../lib/api'
 import SprintStatusEnum from '../../lib/SprintStatusEnum'
+import {SprintConsumer} from '../providers/Sprint'
+
+const getSprintNumber = sprints => {
+    let nr = 0;
+    sprints.forEach(sprint => {
+        if(sprint.nr > nr){
+            nr = sprint.nr;
+        }
+    })
+
+    return nr + 1;
+}
 
 export class AddSprintModal extends React.Component {
     constructor(props) {
@@ -11,7 +23,7 @@ export class AddSprintModal extends React.Component {
             confirmLoading: false,
             project: {
                 name: '',
-                nr: '0',
+                nr: 0,
             },
         };
 
@@ -19,9 +31,10 @@ export class AddSprintModal extends React.Component {
         this.handleOk = this.handleOk.bind(this);
     }
 
-    handleOk() {
+    handleOk(nr) {
         uploadSprint({
             ...this.state.project,
+            nr: nr,
             projectId: this.props.project.id,
             status: SprintStatusEnum.FUTURE,
             document: {
@@ -34,7 +47,7 @@ export class AddSprintModal extends React.Component {
                 confirmLoading: false,
                 project: {
                     name: '',
-                    nr: '0',
+                    nr: 0,
                 },
             }, () => {
                 this.props.onClose();
@@ -56,26 +69,29 @@ export class AddSprintModal extends React.Component {
 
     render() {
         return (
-            <Modal
-                title={`Add a sprint to ${this.props.project.name}`}
-                visible={this.props.visible}
-                onOk={this.handleOk}
-                confirmLoading={this.state.confirmLoading}
-                onCancel={this.handleCancel}
-            >
-                <Input addonBefore={'Name'}
-                       type={'text'}
-                       value={this.state.project.name}
-                       onChange={e => this.setField('name', e.target.value)}
-                />
-                <Input addonBefore={'Nr'}
-                       type={'number'}
-                       value={this.state.project.nr}
-                       onChange={e => this.setField('nr', e.target.value)}
-                />
-
-
-            </Modal>
+            <SprintConsumer projectIds={[this.props.project.id]}>
+                {sprints => (
+                    <Modal
+                        title={`Add a sprint to ${this.props.project.name}`}
+                        visible={this.props.visible}
+                        onOk={this.handleOk.bind(this, getSprintNumber(sprints))}
+                        confirmLoading={this.state.confirmLoading}
+                        onCancel={this.handleCancel}
+                    >
+                        <Input addonBefore={'Name'}
+                               type={'text'}
+                               value={this.state.project.name}
+                               onChange={e => this.setField('name', e.target.value)}
+                        />
+                        <Input addonBefore={'Nr'}
+                               type={'number'}
+                               disabled={true}
+                               value={getSprintNumber(sprints)}
+                               onChange={e => this.setField('nr', parseInt(e.target.value, 10))}
+                        />
+                    </Modal>
+                )}
+            </SprintConsumer>
         );
     }
 }

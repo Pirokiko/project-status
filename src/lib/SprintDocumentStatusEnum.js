@@ -1,5 +1,5 @@
 export default {
-    NON_EXISTENT: 'NON-EXISTENT',
+    NONE: null,
     DRAFT: 'DRAFT',
     SUBMITTED: 'SUBMITTED',
     APPROVED: 'APPROVED',
