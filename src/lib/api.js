@@ -1,5 +1,5 @@
 import uuid from 'uuid/v4';
-import {get, post, put} from './http-request-helpers'
+import {get, post, put, remove} from './http-request-helpers'
 
 const buildEvent = (evt, data) => {
     if(!data){
@@ -95,5 +95,10 @@ export const uploadTask = task => {
     }
 
     return put('/tasks/'+task.id, task)
+        .then(dispatch('task.changed'));
+};
+
+export const deleteTask = taskId => {
+    return remove('/tasks/'+taskId)
         .then(dispatch('task.changed'));
 };

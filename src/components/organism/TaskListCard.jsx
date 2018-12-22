@@ -1,13 +1,14 @@
 import React from 'react';
 import {Button, Card, Col, Icon, Input, Row, Switch, Tabs} from 'antd'
 import {TaskConsumer} from '../providers/Task'
-import {uploadTask} from '../../lib/api'
+import {deleteTask, uploadTask} from '../../lib/api'
 import debounce from 'lodash/debounce';
 import {AddTaskModal} from './AddTaskModal'
 import SprintStatusEnum from '../../lib/SprintStatusEnum'
 
 const check = <Icon type='check' />;
 const close = <Icon type='close' />;
+const DeleteIcon = props => <Icon {...props} type='close' style={{ color: 'red' }} />;
 
 const onTaskChange = debounce((task, key, value) => uploadTask({
     ...task,
@@ -31,6 +32,9 @@ const TaskList = ({ tasks, emptyMessage }) => tasks.length === 0 ? emptyMessage 
                     unCheckedChildren={close}
                     onChange={checked => onTaskChange(task, 'completed', checked)}
                     defaultChecked={task.completed}
+                />}
+                addonAfter={<DeleteIcon
+                    onClick={() => deleteTask(task.id)}
                 />}
                 defaultValue={task.name}
                 onChange={e => onTaskChange(task, 'name', e.target.value)}

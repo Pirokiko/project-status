@@ -38,3 +38,11 @@ export const put = (url, data) => {
         .then(throwErrorOnFailedRequest)
         .then(response => response.json())
 }
+
+export const remove = (url) => {
+    return fetch(`${BASE_URL}${url}`, {
+        method: "DELETE",
+    })
+        .then(throwErrorOnFailedRequest)
+        .then(response => response.json())
+};
