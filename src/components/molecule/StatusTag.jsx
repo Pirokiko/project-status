@@ -19,7 +19,7 @@ const getSurroundingValues = (status, statusList) => {
 };
 
 const StatusMenu = ({values, getText, status, onChange}) => (
-    <Menu>
+    <Menu selectable={false} selectedKeys={[status]}>
         {values.map(value => (
             <Menu.Item key={value}
                        disabled={!isAllowed(status, getSurroundingValues(value, values))}
