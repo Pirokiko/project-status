@@ -10,8 +10,10 @@ export class ClientProvider extends React.Component {
         this.state = {
             clients: []
         };
+        this.loaded = false;
 
         this.refreshClients = this.refreshClients.bind(this);
+        this.load = this.load.bind(this);
     }
 
     refreshClients(){
@@ -20,15 +22,25 @@ export class ClientProvider extends React.Component {
             .catch(err => console.error(err));
     }
 
+    load(){
+        if(!this.loaded){
+            this.loaded = true;
+            this.refreshClients();
+        }
+    }
+
     componentDidMount(){
-        this.refreshClients();
+        setTimeout(this.load,10000);
 
         document.addEventListener('client.changed', this.refreshClients);
     }
 
     render(){
         return (
-            <Provider {...this.props} value={this.state.clients} />
+            <Provider {...this.props} value={{
+                clients: this.state.clients,
+                load: this.load,
+            }} />
         );
     }
 }
@@ -37,7 +49,7 @@ ClientProvider.defaultProps = {};
 
 export const ClientConsumer = ({id, children: renderFunc}) => (
     <Consumer>
-        {(clients) => {
+        {({clients}) => {
             if (id) {
                 return renderFunc(clients.find(client => client.id === id));
             }
@@ -51,4 +63,10 @@ ClientConsumer.propTypes = {
 ClientConsumer.defaultProps = {
     id: null,
 };
+
+export const ClientProviderLoader = ({ children: renderFunc }) => (
+    <Consumer>
+        {({ load }) => renderFunc(load)}
+    </Consumer>
+);
 

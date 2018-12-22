@@ -10,7 +10,9 @@ export class SprintProvider extends React.Component {
         this.state = {
             sprints: [],
         };
+        this.loaded = false;
         this.refreshSprints = this.refreshSprints.bind(this);
+        this.load = this.load.bind(this);
     }
 
     refreshSprints() {
@@ -19,16 +21,26 @@ export class SprintProvider extends React.Component {
             .catch(err => console.error(err));
     }
 
+    load(){
+        if(!this.loaded){
+            this.loaded = true;
+            this.refreshSprints();
+        }
+    }
+
     componentDidMount() {
         //setup the api call, subscribe to websocket for changes, etc ......
-        this.refreshSprints();
+        setTimeout(this.load, 10000);
 
         document.addEventListener('sprint.changed', this.refreshSprints);
     }
 
     render() {
         return (
-            <Provider {...this.props} value={this.state.sprints}/>
+            <Provider {...this.props} value={{
+                sprints: this.state.sprints,
+                load: this.load,
+            }}/>
         );
     }
 }
@@ -37,7 +49,7 @@ SprintProvider.defaultProps = {};
 
 export const SprintConsumer = ({id, projectIds, children: renderFunc}) => (
     <Consumer>
-        {(sprints) => {
+        {({sprints}) => {
             if(id){
                 return renderFunc(sprints.find(sprint => sprint.id === id));
             }
@@ -57,3 +69,9 @@ SprintConsumer.defaultProps = {
     projectIds: null,
 };
 
+
+export const SprintProviderLoader = ({ children: renderFunc }) => (
+    <Consumer>
+        {({ load }) => renderFunc(load)}
+    </Consumer>
+);

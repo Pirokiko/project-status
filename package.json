@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@loadable/component": "^5.2.2",
     "antd": "^3.11.0",
     "babel-plugin-import": "^1.11.0",
     "prop-types": "latest",
@@ -29,5 +30,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "react-app-rewire-webpack-bundle-analyzer": "^1.0.1",
+    "webpack-bundle-analyzer": "^3.0.3"
+  }
 }

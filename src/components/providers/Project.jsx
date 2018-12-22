@@ -11,6 +11,9 @@ export class ProjectProvider extends React.Component {
             projects: [],
         };
 
+        this.loaded = false;
+        this.load = this.load.bind(this);
+
         this.refreshProjects = this.refreshProjects.bind(this);
     }
 
@@ -20,16 +23,26 @@ export class ProjectProvider extends React.Component {
             .catch(err => console.error(err));
     }
 
+    load(){
+        if(!this.loaded){
+            this.loaded = true;
+            this.refreshProjects();
+        }
+    }
+
     componentDidMount() {
         //setup the api call, subscribe to websocket for changes, etc ......
-        this.refreshProjects();
+        setTimeout(this.load, 10000);
 
         document.addEventListener('project.changed', this.refreshProjects);
     }
 
     render() {
         return (
-            <Provider {...this.props} value={this.state.projects}/>
+            <Provider {...this.props} value={{
+                projects: this.state.projects,
+                load: this.load,
+            }}/>
         );
     }
 }
@@ -43,7 +56,7 @@ ProjectProvider.defaultProps = {
 
 export const ProjectConsumer = ({id, clientIds, children: renderFunc}) => (
     <Consumer>
-        {(projects) => {
+        {({projects}) => {
             if(id){
                 return renderFunc(projects.find(project => project.id === id));
             }
@@ -63,3 +76,8 @@ ProjectConsumer.defaultProps = {
     clientIds: null,
 };
 
+export const ProjectProviderLoader = ({ children: renderFunc }) => (
+    <Consumer>
+        {({ load }) => renderFunc(load)}
+    </Consumer>
+);
