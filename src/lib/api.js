@@ -77,3 +77,23 @@ export const uploadSprint = sprint => {
     return put('/sprints/'+sprint.id, sprint)
         .then(dispatch('sprint.changed'));
 };
+
+
+/***********
+ *  Tasks  *
+ ***********/
+
+export const getTasks = () => {
+    return get('/tasks');
+};
+
+export const uploadTask = task => {
+    if(!task.id){
+        task.id = uuid();
+        return post('/tasks/', task)
+            .then(dispatch('task.changed'));
+    }
+
+    return put('/tasks/'+task.id, task)
+        .then(dispatch('task.changed'));
+};

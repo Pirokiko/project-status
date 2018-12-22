@@ -12,7 +12,8 @@
     "react-icons": "^3.2.2",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "lodash": "latest"
   },
   "scripts": {
     "start": "react-app-rewired start",

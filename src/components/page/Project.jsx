@@ -4,7 +4,7 @@ import { Col, Row } from 'antd';
 
 import {BasicPage} from './BasicPage'
 import {ProjectConsumer} from '../providers/Project'
-import {withRouter} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 import {ProjectCard} from '../molecule/ProjectCard'
 import {SprintConsumer} from '../providers/Sprint'
 import {SprintCard} from '../molecule/SprintCard'
@@ -37,7 +37,9 @@ class ProjectPage extends React.Component{
                                 <SprintConsumer projectIds={[project.id]}>
                                     {(sprints) => sprints.map(sprint => (
                                         <Col key={sprint.id} span={8}>
-                                            <SprintCard sprint={sprint} style={{marginBottom: 16}} />
+                                            <Link to={'/sprint/' + sprint.id}>
+                                                <SprintCard sprint={sprint} style={{marginBottom: 16}} />
+                                            </Link>
                                         </Col>
                                     ))}
                                 </SprintConsumer>

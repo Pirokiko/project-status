@@ -5,12 +5,15 @@ import * as serviceWorker from './serviceWorker';
 import {ProjectProvider} from './components/providers/Project'
 import {SprintProvider} from './components/providers/Sprint'
 import {ClientProvider} from './components/providers/Client'
+import {TaskProvider} from './components/providers/Task'
 
 ReactDOM.render(
     <ClientProvider>
         <ProjectProvider>
             <SprintProvider>
-                <App />
+                <TaskProvider>
+                    <App />
+                </TaskProvider>
             </SprintProvider>
         </ProjectProvider>
     </ClientProvider>

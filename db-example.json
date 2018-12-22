@@ -25,5 +25,13 @@
         "data" : "reference uuid in file-server project"
       }
     }
+  ],
+  "tasks": [
+    {
+      "id" : "8298928932893",
+      "name" : "Some task",
+      "completed" : false,
+      "sprintId" : "923402890348923489"
+    }
   ]
 }
