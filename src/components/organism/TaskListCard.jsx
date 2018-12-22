@@ -4,6 +4,7 @@ import {TaskConsumer} from '../providers/Task'
 import {uploadTask} from '../../lib/api'
 import debounce from 'lodash/debounce';
 import {AddTaskModal} from './AddTaskModal'
+import SprintStatusEnum from '../../lib/SprintStatusEnum'
 
 const check = <Icon type='check' />;
 const close = <Icon type='close' />;
@@ -21,24 +22,29 @@ const noUncompletedMessage = completedTasks =>
         ? 'Well done all tasks are completed'
         : 'Add some tasks first, before you work on them';
 
-const TaskList = ({ tasks, emptyMessage }) => {
-    if(tasks.length === 0) return emptyMessage;
+const TaskList = ({ tasks, emptyMessage }) => tasks.length === 0 ? emptyMessage : (
+    <Row gutter={16}>{tasks.map(task => (
+        <Col key={task.id} span={8}>
+            <Input
+                addonBefore={<Switch
+                    checkedChildren={check}
+                    unCheckedChildren={close}
+                    onChange={checked => onTaskChange(task, 'completed', checked)}
+                    defaultChecked={task.completed}
+                />}
+                defaultValue={task.name}
+                onChange={e => onTaskChange(task, 'name', e.target.value)}
+            />
+        </Col>
+    ))}</Row>
+);
 
+const getAddTaskButton = (sprint, showAddTaskModal) => {
+    if([SprintStatusEnum.FINISHED, SprintStatusEnum.FINALIZING, SprintStatusEnum.IN_REVIEW].includes(sprint.status)) return null;
     return (
-        <Row gutter={16}>{tasks.map(task => (
-            <Col key={task.id} span={8}>
-                <Input
-                    addonBefore={<Switch
-                        checkedChildren={check}
-                        unCheckedChildren={close}
-                        onChange={checked => onTaskChange(task, 'completed', checked)}
-                        defaultChecked={task.completed}
-                    />}
-                    defaultValue={task.name}
-                    onChange={e => onTaskChange(task, 'name', e.target.value)}
-                />
-            </Col>
-        ))}</Row>
+        <Button htmlType={'button'} onClick={showAddTaskModal}>
+            <Icon type={'plus'} />Add task
+        </Button>
     );
 }
 
@@ -48,12 +54,17 @@ export class TaskListCard extends React.PureComponent {
         this.state = {
             addTaskModalVisible: false,
         };
+
+        this.showAddTaskModal = this.showAddTaskModal.bind(this);
     }
+
+    showAddTaskModal(){
+        this.setState({ addTaskModalVisible: true });
+    }
+
     render(){
         return (
-            <Card title={"Tasks"} extra={<Button htmlType={'button'} onClick={() => this.setState({
-                addTaskModalVisible: true
-            })}><Icon type={'plus'} />Add task</Button>}>
+            <Card title={"Tasks"} extra={getAddTaskButton(this.props.sprint, this.showAddTaskModal)}>
                 <TaskConsumer sprintIds={[this.props.sprint.id]}>
                     {(tasks) => {
                         const uncompleted = uncompletedTasks(tasks);
