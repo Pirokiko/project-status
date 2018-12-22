@@ -27,13 +27,16 @@ const validateForErrors = (status, sprint, tasks) => {
                 return 'How can you review something when no tasks have been defined';
             }
             if(tasks.filter(task => !task.completed).length > 0){
-                return 'You\'re not done yet with all the tasks, complete them before letting the client review';
+                return 'You\'re not done yet with all the tasks, complete them before letting the client review your work';
             }
             return null;
         case SprintStatusEnum.FINALIZING:
-            return true; //This is not an actual thing (should remove it as a status)
+            return null; //This is not an actual thing (should remove it as a status)
         case SprintStatusEnum.FINISHED:
-            return sprint.status === SprintStatusEnum.IN_REVIEW || sprint.status === SprintStatusEnum.FINALIZING;
+            if(sprint.status === SprintStatusEnum.IN_REVIEW || sprint.status === SprintStatusEnum.FINALIZING){
+                return null;
+            }
+            return 'Can\t skip state, walk through the different states properly';
         default:
             return 'Not allowed';
     }
