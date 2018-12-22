@@ -1,15 +1,9 @@
 import React from 'react';
-import {Button} from 'antd'
-import { Col, Row } from 'antd';
 
 import {BasicPage} from './BasicPage'
-import {ProjectConsumer} from '../providers/Project'
 import {withRouter} from 'react-router-dom'
-import {ProjectCard} from '../molecule/ProjectCard'
 import {SprintConsumer} from '../providers/Sprint'
 import {SprintCard} from '../molecule/SprintCard'
-import {AddSprintModal} from '../organism/AddSprintModal'
-import {TaskConsumer} from '../providers/Task'
 import {TaskListCard} from '../organism/TaskListCard'
 
 class SprintPage extends React.Component{
