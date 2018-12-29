@@ -4,48 +4,28 @@ import {SprintConsumer, SprintProviderLoader} from '../../providers/Sprint'
 import {SprintCard} from '../../molecule/SprintCard'
 import {TaskListCard} from '../../organism/TaskListCard'
 import {withBreadcrumb} from '../../hoc/withPageBreadcrumb'
-import {BasePageConsumer} from '../../providers/BasePage'
 import {compose} from '../../../lib/compose'
 import {withLoader} from '../../hoc/withLoader'
 import {TaskProviderLoader} from '../../providers/Task'
+import {withPageActions} from '../../hoc/withPageActions'
 
-class SprintPage extends React.Component {
-    componentDidMount(){
-        this.props.setTitle(`Sprint: ${this.props.sprint.name}`);
-        this.props.setActionButtons(() => null);
-    }
-    componentWillUnmount() {
-        this.props.setTitle('');
-        this.props.setActionButtons(() => null);
-    }
-
-    render(){
-        return(
-            <React.Fragment>
-                <SprintCard sprint={this.props.sprint}/>
-                <br/>
-                <TaskListCard sprint={this.props.sprint} />
-            </React.Fragment>
-        );
-    }
-}
+const SprintPage = ({ sprint }) => (
+    <React.Fragment>
+        <SprintCard sprint={sprint}/>
+        <br/>
+        <TaskListCard sprint={sprint} />
+    </React.Fragment>
+);
 
 export const Sprint = compose(
     withBreadcrumb('sprint', 'Sprint'),
     withLoader(SprintProviderLoader),
-    withLoader(TaskProviderLoader)
+    withLoader(TaskProviderLoader),
+    withPageActions(({ sprint}) => `Sprint: ${sprint && sprint.name}`)
 )(withRouter(({match}) => (
-    <BasePageConsumer>
-        {({ setTitle, setActionButtons }) => (
-            <SprintConsumer id={match.params.id}>
-                {(sprint) => sprint ? <SprintPage
-                    sprint={sprint}
-                    setTitle={setTitle}
-                    setActionButtons={setActionButtons}
-                /> : null}
-            </SprintConsumer>
-        )}
-    </BasePageConsumer>
+    <SprintConsumer id={match.params.id}>
+        {(sprint) => sprint ? <SprintPage sprint={sprint} /> : null}
+    </SprintConsumer>
 )));
 
 Sprint.propTypes = {};

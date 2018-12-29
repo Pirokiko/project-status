@@ -2,7 +2,7 @@ import React from 'react';
 
 const {Provider, Consumer} = React.createContext({
     title: '',
-    actionButtons: () => null,
+    actionButtons: null,
     setTitle: () => {},
     setActionButtons: () => {},
 });
@@ -12,7 +12,7 @@ export class BasePageProvider extends React.Component {
         super(props);
         this.state = {
             title: '',
-            actionButtons: () => null,
+            actionButtons: null,
         };
 
         this.setTitle = this.setTitle.bind(this);
