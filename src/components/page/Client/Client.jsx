@@ -7,18 +7,17 @@ import {ProjectConsumer, ProjectProviderLoader} from '../../providers/Project'
 import {ProjectCard} from '../../molecule/ProjectCard'
 import {AddProjectModal} from '../../organism/AddProjectModal'
 import {BasePageConsumer} from '../../providers/BasePage'
+import {withModals} from '../../hoc/withModals'
+import {compose} from '../../../lib/compose'
+import {withBreadcrumb} from '../../hoc/withPageBreadcrumb'
+
+const modalName = 'client';
 
 class ClientPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            addClientModal: false,
-        }
-    }
     componentDidMount(){
         this.props.setTitle(`Client: ${this.props.client.name}`);
         this.props.setActionButtons(() => (
-            <Button type={'primary'} onClick={() => this.setState({ addClientModal: true})}>
+            <Button htmlType={'button'} type={'primary'} onClick={() => this.props.showModal(modalName)}>
                 Add Project
             </Button>
         ));
@@ -48,15 +47,19 @@ class ClientPage extends React.Component {
                 </Row>
                 <AddProjectModal
                     client={client}
-                    visible={this.state.addClientModal}
-                    onClose={() => this.setState({
-                        addClientModal: false,
-                    })}
+                    visible={this.props.isModalOpen(modalName)}
+                    onClose={() => this.props.hideModal(modalName)}
                 />
             </React.Fragment>
         );
     }
 }
+
+const ClientPageWithModal = compose(
+    withBreadcrumb('client', 'Client'),
+    withModals(modalName)
+)(ClientPage);
+
 
 class OnlyWithClient extends React.Component {
     componentDidMount() {
@@ -71,22 +74,12 @@ class OnlyWithClient extends React.Component {
                 {(client) => {
                     if(!client) return null;
 
-                    return <ClientPage {...props} client={client} />
+                    return <ClientPageWithModal {...props} client={client} />
                 }}
             </ClientConsumer>
         );
     }
 }
-
-// const OnlyWithClient = ({id, ...props}) => (
-//     <ClientConsumer id={id}>
-//         {(client) => {
-//             if(!client) return null;
-//
-//             return <ClientPage {...props} client={client} />
-//         }}
-//     </ClientConsumer>
-// );
 
 const Client = withRouter(({history, location, match, ...props}) => <OnlyWithClient {...props} id={match.params.id}/>)
 Client.propTypes = {};

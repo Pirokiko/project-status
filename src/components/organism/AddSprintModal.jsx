@@ -38,7 +38,7 @@ export class AddSprintModal extends React.Component {
             projectId: this.props.project.id,
             status: SprintStatusEnum.FUTURE,
             document: {
-                status: 'NON-EXISTENT',
+                status: null,
                 name: null,
                 data: null,
             },

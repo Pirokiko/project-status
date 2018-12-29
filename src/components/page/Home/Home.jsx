@@ -5,21 +5,17 @@ import {ClientConsumer, ClientProviderLoader} from '../../providers/Client'
 import {ClientCard} from '../../molecule/ClientCard'
 import {AddClientModal} from '../../organism/AddClientModal'
 import {BasePageConsumer} from '../../providers/BasePage'
+import {compose} from '../../../lib/compose'
+import {withBreadcrumb} from '../../hoc/withPageBreadcrumb'
+import {withModals} from '../../hoc/withModals'
 
-class Home extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            addClientModal: false,
-        }
-    }
+const modalName = 'client';
 
+class HomeClass extends React.Component {
     componentDidMount(){
         this.props.setTitle('Home');
         this.props.setActionButtons(() => (
-            <Button type={'primary'} onClick={() => this.setState({
-                    addClientModal: true,
-            })}>
+            <Button htmlType={'button'} type={'primary'} onClick={() => this.props.showModal(modalName)}>
                 Add Client
             </Button>
         ));
@@ -32,6 +28,7 @@ class Home extends React.Component {
     }
 
     render(){
+        const { isModalOpen, hideModal } = this.props;
         return (
             <React.Fragment>
                 <Row gutter={16}>
@@ -45,15 +42,16 @@ class Home extends React.Component {
                     ))}
                 </ClientConsumer>
                 </Row>
-                <AddClientModal visible={this.state.addClientModal} onClose={() => this.setState({
-                    addClientModal: false,
-                })}/>
+                <AddClientModal visible={isModalOpen(modalName)} onClose={() => hideModal(modalName)} />
             </React.Fragment>
         );
     }
 }
-Home.propTypes = {};
-Home.defaultProps = {};
+
+const Home = compose(
+    withBreadcrumb('home', 'Home'),
+    withModals(modalName)
+)(HomeClass);
 
 const HomeWrapper = props => (
     <ClientProviderLoader>

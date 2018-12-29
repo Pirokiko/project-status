@@ -6,12 +6,18 @@ import * as serviceWorker from './serviceWorker';
 import {ProjectProvider} from './components/providers/Project'
 import {SprintProvider} from './components/providers/Sprint'
 import {ClientProvider} from './components/providers/Client'
+import {TaskProvider} from './components/providers/Task'
+import {BreadcrumbProvider} from './components/providers/Breadcrumb'
 
 ReactDOM.render(
     <ClientProvider>
         <ProjectProvider>
             <SprintProvider>
-                <App />
+                <TaskProvider>
+                    <BreadcrumbProvider>
+                        <App />
+                    </BreadcrumbProvider>
+                </TaskProvider>
             </SprintProvider>
         </ProjectProvider>
     </ClientProvider>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 import {Button, Col, Row} from 'antd';
 import {ProjectConsumer, ProjectProviderLoader} from '../../providers/Project'
 import {ProjectCard} from '../../molecule/ProjectCard'
@@ -7,19 +7,17 @@ import {SprintConsumer, SprintProviderLoader} from '../../providers/Sprint'
 import {SprintCard} from '../../molecule/SprintCard'
 import {AddSprintModal} from '../../organism/AddSprintModal'
 import {BasePageConsumer} from '../../providers/BasePage'
+import {compose} from '../../../lib/compose'
+import {withBreadcrumb} from '../../hoc/withPageBreadcrumb'
+import {withModals} from '../../hoc/withModals'
 
-class ProjectPage extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            addSprintModal: false,
-        }
-    }
+const modalName = 'sprint';
 
+class ProjectPageClass extends React.Component{
     componentDidMount(){
         this.props.setTitle(`Project: ${this.props.project.name}`);
         this.props.setActionButtons(() => (
-            <Button type={'primary'} onClick={() => this.setState({ addSprintModal: true})}>
+            <Button htmlType={'button'} type={'primary'} onClick={() => this.props.showModal(modalName)}>
                 Add Sprint
             </Button>
         ));
@@ -30,7 +28,7 @@ class ProjectPage extends React.Component{
     }
 
     render(){
-        const { project } = this.props;
+        const { project, isModalOpen, hideModal } = this.props;
         return (
             <React.Fragment>
                 <ProjectCard project={project}/>
@@ -40,22 +38,27 @@ class ProjectPage extends React.Component{
                     <SprintConsumer projectIds={[project.id]}>
                         {(sprints) => sprints.map(sprint => (
                             <Col key={sprint.id} span={8}>
-                                <SprintCard sprint={sprint} style={{marginBottom: 16}} />
+                                <Link to={'/sprint/' + sprint.id}>
+                                    <SprintCard sprint={sprint} style={{marginBottom: 16}} />
+                                </Link>
                             </Col>
                         ))}
                     </SprintConsumer>
                 </Row>
                 <AddSprintModal
                     project={project}
-                    visible={this.state.addSprintModal}
-                    onClose={() => this.setState({
-                        addSprintModal: false,
-                    })}
+                    visible={isModalOpen(modalName)}
+                    onClose={() => hideModal(modalName)}
                 />
             </React.Fragment>
         );
     }
 }
+
+const ProjectPage = compose(
+    withBreadcrumb('project', 'Project'),
+    withModals(modalName),
+)(ProjectPageClass);
 
 class OnlyWithProject extends React.Component {
     componentDidMount() {
