@@ -1,12 +1,15 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom'
-import {SprintConsumer} from '../../providers/Sprint'
+import {SprintConsumer, SprintProviderLoader} from '../../providers/Sprint'
 import {SprintCard} from '../../molecule/SprintCard'
 import {TaskListCard} from '../../organism/TaskListCard'
 import {withBreadcrumb} from '../../hoc/withPageBreadcrumb'
 import {BasePageConsumer} from '../../providers/BasePage'
+import {compose} from '../../../lib/compose'
+import {withLoaders} from '../../hoc/withLoaders'
+import {TaskProviderLoader} from '../../providers/Task'
 
-class SprintPageClass extends React.Component {
+class SprintPage extends React.Component {
     componentDidMount(){
         this.props.setTitle(`Sprint: ${this.props.sprint.name}`);
         this.props.setActionButtons(() => null);
@@ -26,9 +29,12 @@ class SprintPageClass extends React.Component {
         );
     }
 }
-const SprintPage = withBreadcrumb('sprint', 'Sprint')(SprintPageClass);
 
-export const Sprint = withRouter(({match}) => (
+export const Sprint = compose(
+    withBreadcrumb('sprint', 'Sprint'),
+    withLoaders(SprintProviderLoader),
+    withLoaders(TaskProviderLoader)
+)(withRouter(({match}) => (
     <BasePageConsumer>
         {({ setTitle, setActionButtons }) => (
             <SprintConsumer id={match.params.id}>
@@ -40,7 +46,7 @@ export const Sprint = withRouter(({match}) => (
             </SprintConsumer>
         )}
     </BasePageConsumer>
-));
+)));
 
 Sprint.propTypes = {};
 Sprint.defaultProps = {};

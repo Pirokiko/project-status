@@ -11,6 +11,9 @@ export class TaskProvider extends React.Component {
             tasks: [],
         };
         this.refreshTasks = this.refreshTasks.bind(this);
+
+        this.loaded = false;
+        this.load = this.load.bind(this);
     }
 
     refreshTasks() {
@@ -19,16 +22,26 @@ export class TaskProvider extends React.Component {
             .catch(err => console.error(err));
     }
 
+    load(){
+        if(!this.loaded){
+            this.loaded = true;
+            this.refreshTasks();
+        }
+    }
+
     componentDidMount() {
         //setup the api call, subscribe to websocket for changes, etc ......
-        this.refreshTasks();
+        setTimeout(this.load, 10000);
 
         document.addEventListener('task.changed', this.refreshTasks);
     }
 
     render() {
         return (
-            <Provider {...this.props} value={this.state.tasks}/>
+            <Provider {...this.props} value={{
+                tasks:this.state.tasks,
+                load: this.load,
+            }}/>
         );
     }
 }
@@ -37,7 +50,7 @@ TaskProvider.defaultProps = {};
 
 export const TaskConsumer = ({id, sprintIds, children: renderFunc}) => (
     <Consumer>
-        {(tasks) => {
+        {({ tasks }) => {
             if(id){
                 return renderFunc(tasks.find(task => task.id === id));
             }
@@ -57,3 +70,8 @@ TaskConsumer.defaultProps = {
     sprintIds: null,
 };
 
+export const TaskProviderLoader = ({ children: renderFunc }) => (
+    <Consumer>
+        {({ load }) => renderFunc(load)}
+    </Consumer>
+);
