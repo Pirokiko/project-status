@@ -6,7 +6,7 @@ import {TaskListCard} from '../../organism/TaskListCard'
 import {withBreadcrumb} from '../../hoc/withPageBreadcrumb'
 import {BasePageConsumer} from '../../providers/BasePage'
 import {compose} from '../../../lib/compose'
-import {withLoaders} from '../../hoc/withLoaders'
+import {withLoader} from '../../hoc/withLoader'
 import {TaskProviderLoader} from '../../providers/Task'
 
 class SprintPage extends React.Component {
@@ -32,8 +32,8 @@ class SprintPage extends React.Component {
 
 export const Sprint = compose(
     withBreadcrumb('sprint', 'Sprint'),
-    withLoaders(SprintProviderLoader),
-    withLoaders(TaskProviderLoader)
+    withLoader(SprintProviderLoader),
+    withLoader(TaskProviderLoader)
 )(withRouter(({match}) => (
     <BasePageConsumer>
         {({ setTitle, setActionButtons }) => (

@@ -32,7 +32,7 @@ function getDisplayName(WrappedComponent) {
     return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
-export function withLoaders(loader) {
+export function withLoader(loader) {
     return function (WrappedComponent) {
         return withLoadersWrapper(WrappedComponent, loader);
     };
