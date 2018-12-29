@@ -5,26 +5,17 @@ import {withRouter} from 'react-router-dom'
 import {SprintConsumer} from '../providers/Sprint'
 import {SprintCard} from '../molecule/SprintCard'
 import {TaskListCard} from '../organism/TaskListCard'
+import {withBreadcrumb} from '../hoc/withPageBreadcrumb'
 
-class SprintPage extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            addSprintModal: false,
-        }
-    }
+const SprintPageClass = ({ sprint }) => (
+    <BasicPage title={'Sprint: '+sprint.name}>
+        <SprintCard sprint={sprint}/>
+        <br/>
+        <TaskListCard sprint={sprint} />
+    </BasicPage>
+);
 
-    render(){
-        const { sprint } = this.props;
-        return (
-            <BasicPage title={'Sprint: '+sprint.name}>
-                <SprintCard sprint={sprint}/>
-                <br/>
-                <TaskListCard sprint={sprint} />
-            </BasicPage>
-        );
-    }
-}
+const SprintPage = withBreadcrumb('sprint', 'Sprint')(SprintPageClass);
 
 export const Sprint = withRouter(({match}) => (
     <SprintConsumer id={match.params.id}>

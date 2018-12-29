@@ -6,42 +6,38 @@ import {ClientCard} from '../molecule/ClientCard'
 import {Button, Col, Row} from 'antd'
 import {Link} from 'react-router-dom'
 import {AddClientModal} from '../organism/AddClientModal'
+import {withBreadcrumb} from '../hoc/withPageBreadcrumb'
+import {withModals} from '../hoc/withModals'
+import {compose} from '../../lib/compose'
 
-export class Home extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            addClientModal: false,
-        }
-    }
+const modalName = 'client';
 
-    render(){
-        return (
-            <BasicPage title={'Home'} actionButtons={() => (
-                <Button type={'primary'} onClick={() => this.setState({
-                    addClientModal: true,
-                })}>
-                    Add Client
-                </Button>
-            )}>
-                <Row gutter={16}>
-                <ClientConsumer>
-                    {(clients) => clients.map(client => (
-                        <Col key={client.id} span={8}>
-                        <Link to={'/client/'+client.id}>
-                            <ClientCard client={client} />
-                        </Link>
-                        </Col>
-                    ))}
-                </ClientConsumer>
-                </Row>
-                <AddClientModal visible={this.state.addClientModal} onClose={() => this.setState({
-                    addClientModal: false,
-                })}/>
-            </BasicPage>
-        );
-    }
-}
+const HomeClass = ({ showModal, hideModal, isModalOpen }) => (
+    <BasicPage title={'Home'} actionButtons={() => (
+        <Button htmlType={'button'} type={'primary'} onClick={() => showModal(modalName)}>
+            Add Client
+        </Button>
+    )}>
+        <Row gutter={16}>
+        <ClientConsumer>
+            {(clients) => clients.map(client => (
+                <Col key={client.id} span={8}>
+                <Link to={'/client/'+client.id}>
+                    <ClientCard client={client} />
+                </Link>
+                </Col>
+            ))}
+        </ClientConsumer>
+        </Row>
+        <AddClientModal visible={isModalOpen(modalName)} onClose={() => hideModal(modalName)}/>
+    </BasicPage>
+);
 
-Home.propTypes = {};
-Home.defaultProps = {};
+HomeClass.propTypes = {};
+HomeClass.defaultProps = {};
+
+
+export const Home = compose(
+    withBreadcrumb('home', 'Home'),
+    withModals(modalName)
+)(HomeClass);
