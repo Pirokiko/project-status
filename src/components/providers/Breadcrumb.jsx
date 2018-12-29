@@ -44,10 +44,5 @@ BreadcrumbConsumer.propTypes = {};
 BreadcrumbConsumer.defaultProps = {};
 
 export const withBreadcrumbSetter = (WrappedComponent) => props => <Consumer>
-    {({ setBreadcrumb }) => {
-        console.log(setBreadcrumb);
-        return (
-            <WrappedComponent {...props} setBreadcrumb={setBreadcrumb} />
-        )
-    }}
+    {({ setBreadcrumb }) => <WrappedComponent {...props} setBreadcrumb={setBreadcrumb} /> }
 </Consumer>;

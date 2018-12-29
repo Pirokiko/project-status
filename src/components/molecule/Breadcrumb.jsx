@@ -4,14 +4,9 @@ import {BreadcrumbConsumer} from '../providers/Breadcrumb'
 
 export const Breadcrumb = () => (
     <BreadcrumbConsumer>
-        {({ keys, breadcrumbs }) => {
-            console.log(keys);
-            return (
-                <div>{
-                    keys.map(key => breadcrumbs[key])
-                }</div>
-            );
-        }}
+        {({ keys, breadcrumbs }) => (
+            <div>{keys.map(key => breadcrumbs[key] || <span key={key} style={{ margin: 5 }}>{key}</span>)}</div>
+        )}
     </BreadcrumbConsumer>
 );
 
