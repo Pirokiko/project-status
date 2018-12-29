@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 function withLoadersWrapper(WrappedComponent, Loader) {
     class DummyLoaderClass extends React.Component {
         componentDidMount() {

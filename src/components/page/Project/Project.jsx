@@ -10,6 +10,7 @@ import {BasePageConsumer} from '../../providers/BasePage'
 import {compose} from '../../../lib/compose'
 import {withBreadcrumb} from '../../hoc/withPageBreadcrumb'
 import {withModals} from '../../hoc/withModals'
+import {withLoader} from '../../hoc/withLoader'
 
 const modalName = 'sprint';
 
@@ -55,54 +56,32 @@ class ProjectPageClass extends React.Component{
     }
 }
 
-const ProjectPage = compose(
-    withBreadcrumb('project', 'Project'),
-    withModals(modalName),
-)(ProjectPageClass);
+const OnlyWithProject = ({id, ...props}) => (
+    <ProjectConsumer id={id}>
+        {(project) => {
+            if(!project) return null;
 
-class OnlyWithProject extends React.Component {
-    componentDidMount() {
-        this.props.loadProjects();
-        this.props.loadSprints();
-    }
-
-    render(){
-        const {id, ...props} = this.props;
-        return (
-            <ProjectConsumer id={id}>
-                {(project) => {
-                    if(!project) return null;
-
-                    return <ProjectPage {...props} project={project} />
-                }}
-            </ProjectConsumer>
-        )
-    }
-}
+            return <ProjectPageClass {...props} project={project} />
+        }}
+    </ProjectConsumer>
+)
 
 const Project = withRouter(({history, location, match, ...props}) => <OnlyWithProject {...props} id={match.params.id}/>)
 Project.propTypes = {};
 Project.defaultProps = {};
 
-const ProjectWrapper = props => (
-    <ProjectProviderLoader>
-        {(loadProjects) => (
-            <SprintProviderLoader>
-                {(loadSprints) => (
-                    <BasePageConsumer>
-                        {({ setTitle, setActionButtons }) => (
-                            <Project {...props}
-                                     setTitle={setTitle}
-                                     setActionButtons={setActionButtons}
-                                     loadProjects={loadProjects}
-                                     loadSprints={loadSprints}
-                            />
-                        )}
-                    </BasePageConsumer>
-                )}
-            </SprintProviderLoader>
+export const ProjectPage = compose(
+    withLoader(ProjectProviderLoader),
+    withLoader(SprintProviderLoader),
+    withBreadcrumb('project', 'Project'),
+    withModals(modalName),
+)(props => (
+    <BasePageConsumer>
+        {({ setTitle, setActionButtons }) => (
+            <Project {...props}
+                     setTitle={setTitle}
+                     setActionButtons={setActionButtons}
+            />
         )}
-    </ProjectProviderLoader>
-)
-
-export default ProjectWrapper;
+    </BasePageConsumer>
+));

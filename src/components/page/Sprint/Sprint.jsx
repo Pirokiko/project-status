@@ -50,5 +50,3 @@ export const Sprint = compose(
 
 Sprint.propTypes = {};
 Sprint.defaultProps = {};
-
-export default Sprint;

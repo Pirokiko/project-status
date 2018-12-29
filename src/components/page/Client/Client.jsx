@@ -10,10 +10,11 @@ import {BasePageConsumer} from '../../providers/BasePage'
 import {withModals} from '../../hoc/withModals'
 import {compose} from '../../../lib/compose'
 import {withBreadcrumb} from '../../hoc/withPageBreadcrumb'
+import {withLoader} from '../../hoc/withLoader'
 
 const modalName = 'client';
 
-class ClientPage extends React.Component {
+class ClientPageClass extends React.Component {
     componentDidMount(){
         this.props.setTitle(`Client: ${this.props.client.name}`);
         this.props.setActionButtons(() => (
@@ -58,52 +59,32 @@ class ClientPage extends React.Component {
 const ClientPageWithModal = compose(
     withBreadcrumb('client', 'Client'),
     withModals(modalName)
-)(ClientPage);
+)(ClientPageClass);
 
+const OnlyWithClient = ({ id, ...props }) => (
+    <ClientConsumer id={id}>
+        {(client) => {
+            if(!client) return null;
 
-class OnlyWithClient extends React.Component {
-    componentDidMount() {
-        this.props.loadClients();
-        this.props.loadProjects();
-    }
-
-    render() {
-        const { id, ...props } = this.props;
-        return (
-            <ClientConsumer id={id}>
-                {(client) => {
-                    if(!client) return null;
-
-                    return <ClientPageWithModal {...props} client={client} />
-                }}
-            </ClientConsumer>
-        );
-    }
-}
+            return <ClientPageWithModal {...props} client={client} />
+        }}
+    </ClientConsumer>
+);
 
 const Client = withRouter(({history, location, match, ...props}) => <OnlyWithClient {...props} id={match.params.id}/>)
 Client.propTypes = {};
 Client.defaultProps = {};
 
-const ClientWrapper = props => (
-    <ProjectProviderLoader>
-        {(loadProjects) => (
-            <ClientProviderLoader>
-                {(loadClients) => (
-                    <BasePageConsumer>
-                        {({ setTitle, setActionButtons }) => (
-                            <Client {...props}
-                                    setTitle={setTitle}
-                                    setActionButtons={setActionButtons}
-                                    loadClients={loadClients}
-                                    loadProjects={loadProjects}
-                            />
-                        )}
-                    </BasePageConsumer>
-                )}
-            </ClientProviderLoader>
+export const ClientPage = compose(
+    withLoader(ProjectProviderLoader),
+    withLoader(ClientProviderLoader),
+)(props => (
+    <BasePageConsumer>
+        {({ setTitle, setActionButtons }) => (
+            <Client {...props}
+                    setTitle={setTitle}
+                    setActionButtons={setActionButtons}
+            />
         )}
-    </ProjectProviderLoader>
-)
-
-export default ClientWrapper;
+    </BasePageConsumer>
+))

@@ -8,10 +8,11 @@ import {BasePageConsumer} from '../../providers/BasePage'
 import {compose} from '../../../lib/compose'
 import {withBreadcrumb} from '../../hoc/withPageBreadcrumb'
 import {withModals} from '../../hoc/withModals'
+import {withLoader} from '../../hoc/withLoader'
 
 const modalName = 'client';
 
-class HomeClass extends React.Component {
+class Home extends React.Component {
     componentDidMount(){
         this.props.setTitle('Home');
         this.props.setActionButtons(() => (
@@ -19,8 +20,6 @@ class HomeClass extends React.Component {
                 Add Client
             </Button>
         ));
-
-        this.props.loadClients();
     }
     componentWillUnmount() {
         this.props.setTitle('');
@@ -48,21 +47,14 @@ class HomeClass extends React.Component {
     }
 }
 
-const Home = compose(
+export const HomePage = compose(
+    withLoader(ClientProviderLoader),
     withBreadcrumb('home', 'Home'),
-    withModals(modalName)
-)(HomeClass);
-
-const HomeWrapper = props => (
-    <ClientProviderLoader>
-        {(loadClients) => (
-            <BasePageConsumer>
-                {({ setTitle, setActionButtons }) => (
-                    <Home {...props} setTitle={setTitle} setActionButtons={setActionButtons} loadClients={loadClients} />
-                )}
-            </BasePageConsumer>
+    withModals(modalName),
+)(props => (
+    <BasePageConsumer>
+        {({ setTitle, setActionButtons }) => (
+            <Home {...props} setTitle={setTitle} setActionButtons={setActionButtons} />
         )}
-    </ClientProviderLoader>
-)
-
-export default HomeWrapper;
+    </BasePageConsumer>
+))
