@@ -1,0 +1,13 @@
+{
+  "public": "build",
+  "directoryListing": false,
+  "headers": [
+    {
+      "source" : "static/**/*.@(css|js)",
+      "headers" : [{
+        "key" : "Cache-Control",
+        "value" : "max-age=7200"
+      }]
+    }
+  ]
+}
