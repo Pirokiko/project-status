@@ -1,6 +1,6 @@
 import React from 'react';
 import {Col, Row} from 'antd'
-import {ClientConsumer, ClientProviderLoader} from '../../providers/Client'
+import {ClientProviderLoader} from '../../providers/Client'
 import {Link, withRouter} from 'react-router-dom'
 import {ClientCard} from '../../molecule/ClientCard'
 import {ProjectConsumer, ProjectProviderLoader} from '../../providers/Project'
@@ -12,6 +12,7 @@ import {withBreadcrumb} from '../../hoc/withPageBreadcrumb'
 import {withLoader} from '../../hoc/withLoader'
 import {withPageActions} from '../../hoc/withPageActions'
 import {PrimaryButton} from '../../atom/PrimaryButton'
+import {withClient} from '../../hoc/withClient'
 
 const modalName = 'client';
 
@@ -37,32 +38,18 @@ const ClientPageComponent = ({ client, isModalOpen, hideModal }) => (
             onClose={() => hideModal(modalName)}
         />
     </React.Fragment>
-);
-
-const OnlyWithClient = ({ id, ...props }) => (
-    <ClientConsumer id={id}>
-        {(client) => {
-            if(!client) return null;
-
-            return <ClientPageComponent {...props} client={client} />
-        }}
-    </ClientConsumer>
-);
-
-const Client = withRouter(({history, location, match, ...props}) => <OnlyWithClient {...props} id={match.params.id}/>)
-Client.propTypes = {};
-Client.defaultProps = {};
+)
 
 export const ClientPage = compose(
-    withLoader(ProjectProviderLoader),
     withLoader(ClientProviderLoader),
+    withLoader(ProjectProviderLoader),
     withBreadcrumb('client', 'Client'),
     withModals(modalName),
-    withPageActions(props => `Client: ${props.client && props.client.name}`, props => (
+    withRouter,
+    withClient(({ match }) => match.params.id, true),
+    withPageActions(({ client }) => `Client: ${client.name}`, props => (
         <PrimaryButton onClick={() => props.showModal(modalName)}>
             Add Project
         </PrimaryButton>
     ))
-)(props => (
-    <Client {...props} />
-))
+)(ClientPageComponent)

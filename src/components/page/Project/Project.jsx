@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, withRouter} from 'react-router-dom'
 import {Col, Row} from 'antd';
-import {ProjectConsumer, ProjectProviderLoader} from '../../providers/Project'
+import {ProjectProviderLoader} from '../../providers/Project'
 import {ProjectCard} from '../../molecule/ProjectCard'
 import {SprintConsumer, SprintProviderLoader} from '../../providers/Sprint'
 import {SprintCard} from '../../molecule/SprintCard'
@@ -12,6 +12,7 @@ import {withModals} from '../../hoc/withModals'
 import {withLoader} from '../../hoc/withLoader'
 import {withPageActions} from '../../hoc/withPageActions'
 import {PrimaryButton} from '../../atom/PrimaryButton'
+import {withProject} from '../../hoc/withProject'
 
 const modalName = 'sprint';
 
@@ -24,7 +25,7 @@ const ProjectPageComponent = ({ project, isModalOpen, hideModal }) => (
             <SprintConsumer projectIds={[project.id]}>
                 {(sprints) => sprints.map(sprint => (
                     <Col key={sprint.id} span={8}>
-                        <Link to={'/sprint/' + sprint.id}>
+                        <Link to={'/sprint/' + sprint.id} >
                             <SprintCard sprint={sprint} style={{marginBottom: 16}} />
                         </Link>
                     </Col>
@@ -39,23 +40,13 @@ const ProjectPageComponent = ({ project, isModalOpen, hideModal }) => (
     </React.Fragment>
 );
 
-const Project = withRouter(({history, location, match, ...props}) => (
-    <ProjectConsumer id={match.params.id}>
-        {(project) => {
-            if(!project) return null;
-
-            return <ProjectPageComponent {...props} project={project} />
-        }}
-    </ProjectConsumer>
-));
-Project.propTypes = {};
-Project.defaultProps = {};
-
 export const ProjectPage = compose(
     withLoader(ProjectProviderLoader),
     withLoader(SprintProviderLoader),
     withBreadcrumb('project', 'Project'),
     withModals(modalName),
+    withRouter,
+    withProject(props => props.match.params.id, true),
     withPageActions(
         ({ project }) => `Project: ${project && project.name}`,
         ({ showModal }) => (
@@ -63,5 +54,5 @@ export const ProjectPage = compose(
                 Add Sprint
             </PrimaryButton>
         )
-    )
-)(Project);
+    ),
+)(ProjectPageComponent);
