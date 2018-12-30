@@ -12,7 +12,7 @@ export const BasicPage = ({title, actionButtons, children}) => (
             <span>{title}</span>
             <span style={{float: 'right'}}>{actionButtons}</span>
         </Header>
-        <Content style={{padding: '1em'}}>{children}</Content>
+        <Content style={{padding: '1em'}} element={'main'}><main>{children}</main></Content>
         <Footer>&copy; Milan de Graaf 2018</Footer>
     </Layout>
 );
