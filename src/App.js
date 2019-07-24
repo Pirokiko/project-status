@@ -7,12 +7,11 @@ import {Home} from './components/page/Home'
 import {Client} from './components/page/Client'
 import {BasePage} from './components/page/BasePage'
 import {Breadcrumb} from './components/molecule/Breadcrumb'
-import {breadcrumbKeyMap} from './lib/breadcrumbKeymap'
 
 const App = () => (
     <BrowserRouter>
         <React.Fragment>
-            <Breadcrumb keyMap={breadcrumbKeyMap}/>
+            <Breadcrumb/>
             <BasePage>
                 <Route path="/" exact component={Home}/>
                 <Route path="/client/:id" component={Client}/>
