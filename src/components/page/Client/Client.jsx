@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Row} from 'antd'
+import {List} from 'antd'
 import {ClientProviderLoader} from '../../providers/Client'
 import {Link, withRouter} from 'react-router-dom'
 import {ClientCard} from '../../molecule/ClientCard'
@@ -21,17 +21,29 @@ const ClientPageComponent = ({ client, isModalOpen, hideModal }) => (
         <ClientCard client={client}/>
         <br/>
         <h1>Projects</h1>
-        <Row gutter={16}>
-            <ProjectConsumer clientIds={[client.id]}>
-                {(projects) => projects.map(project => (
-                    <Col key={project.id} span={8}>
-                        <Link to={'/project/' + project.id}>
-                            <ProjectCard project={project}/>
-                        </Link>
-                    </Col>
-                ))}
-            </ProjectConsumer>
-        </Row>
+
+        <ProjectConsumer clientIds={[client.id]}>
+            {(projects) => (
+                <List
+                    grid={{
+                        gutter: 16,
+                        xs: 1,
+                        sm: 2,
+                        md: 4,
+                        lg: 6,
+                        xxl: 8
+                    }}
+                    dataSource={projects}
+                    renderItem={project => (
+                        <List.Item>
+                            <Link to={'/project/' + project.id}>
+                                <ProjectCard project={project}/>
+                            </Link>
+                        </List.Item>
+                    )}
+                />
+            )}
+        </ProjectConsumer>
         <AddProjectModal
             client={client}
             visible={isModalOpen(modalName)}
