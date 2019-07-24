@@ -13,6 +13,7 @@ import {withLoader} from '../../hoc/withLoader'
 import {withPageActions} from '../../hoc/withPageActions'
 import {PrimaryButton} from '../../atom/PrimaryButton'
 import {withClient} from '../../hoc/withClient'
+import {GridList} from '../../atom/GridList'
 
 const modalName = 'client';
 
@@ -24,15 +25,7 @@ const ClientPageComponent = ({ client, isModalOpen, hideModal }) => (
 
         <ProjectConsumer clientIds={[client.id]}>
             {(projects) => (
-                <List
-                    grid={{
-                        gutter: 16,
-                        xs: 1,
-                        sm: 2,
-                        md: 4,
-                        lg: 6,
-                        xxl: 8
-                    }}
+                <GridList
                     dataSource={projects}
                     renderItem={project => (
                         <List.Item>

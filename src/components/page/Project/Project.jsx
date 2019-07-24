@@ -13,6 +13,7 @@ import {withLoader} from '../../hoc/withLoader'
 import {withPageActions} from '../../hoc/withPageActions'
 import {PrimaryButton} from '../../atom/PrimaryButton'
 import {withProject} from '../../hoc/withProject'
+import {GridList} from '../../atom/GridList'
 
 const modalName = 'sprint';
 
@@ -21,17 +22,18 @@ const ProjectPageComponent = ({ project, isModalOpen, hideModal }) => (
         <ProjectCard project={project}/>
         <br/>
         <h1>Sprints</h1>
-        <Row gutter={16}>
-            <SprintConsumer projectIds={[project.id]}>
-                {(sprints) => sprints.map(sprint => (
-                    <Col key={sprint.id} span={8}>
+        <SprintConsumer projectIds={[project.id]}>
+            {(sprints) => (
+                <GridList
+                    dataSource={sprints}
+                    renderItem={sprint => <GridList.Item>
                         <Link to={'/sprint/' + sprint.id} >
-                            <SprintCard sprint={sprint} style={{marginBottom: 16}} />
+                            <SprintCard sprint={sprint} />
                         </Link>
-                    </Col>
-                ))}
-            </SprintConsumer>
-        </Row>
+                    </GridList.Item>}
+                />
+            )}
+        </SprintConsumer>
         <AddSprintModal
             project={project}
             visible={isModalOpen(modalName)}

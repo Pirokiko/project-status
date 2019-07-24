@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, Row} from 'antd'
+import {Col, List, Row} from 'antd'
 import {Link} from 'react-router-dom'
 import {ClientConsumer, ClientProviderLoader} from '../../providers/Client'
 import {ClientCard} from '../../molecule/ClientCard'
@@ -10,22 +10,24 @@ import {withModals} from '../../hoc/withModals'
 import {withLoader} from '../../hoc/withLoader'
 import {withPageActions} from '../../hoc/withPageActions'
 import {PrimaryButton} from '../../atom/PrimaryButton'
+import {GridList} from '../../atom/GridList'
 
 const modalName = 'client';
 
 const Home = ({ isModalOpen, hideModal }) => (
     <React.Fragment>
-        <Row gutter={16}>
         <ClientConsumer>
-            {(clients) => clients.map(client => (
-                <Col key={client.id} span={8}>
-                <Link to={'/client/'+client.id}>
-                    <ClientCard client={client} />
-                </Link>
-                </Col>
-            ))}
+            {(clients) => (
+                <GridList
+                    dataSource={clients}
+                    renderItem={client => <List.Item>
+                        <Link to={'/client/'+client.id}>
+                            <ClientCard client={client} />
+                        </Link>
+                    </List.Item>}
+                />
+            )}
         </ClientConsumer>
-        </Row>
         <AddClientModal visible={isModalOpen(modalName)} onClose={() => hideModal(modalName)} />
     </React.Fragment>
 );
