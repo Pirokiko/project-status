@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link, withRouter} from 'react-router-dom'
-import {Col, Row} from 'antd';
 import {ProjectProviderLoader} from '../../providers/Project'
 import {ProjectCard} from '../../molecule/ProjectCard'
 import {SprintConsumer, SprintProviderLoader} from '../../providers/Sprint'

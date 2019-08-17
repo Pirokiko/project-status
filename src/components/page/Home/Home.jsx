@@ -1,5 +1,5 @@
 import React from 'react';
-import {Col, List, Row} from 'antd'
+import {List} from 'antd'
 import {Link} from 'react-router-dom'
 import {ClientConsumer, ClientProviderLoader} from '../../providers/Client'
 import {ClientCard} from '../../molecule/ClientCard'

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {List} from 'antd'
 
 export const GridList = ({...props}) => <List
